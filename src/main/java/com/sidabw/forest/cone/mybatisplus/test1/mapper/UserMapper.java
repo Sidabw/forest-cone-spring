@@ -8,10 +8,9 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.sidabw.forest.cone.mybatisplus.mapper;
+package com.sidabw.forest.cone.mybatisplus.test1.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sidabw.forest.cone.mybatisplus.entity.User;
 
 /**
  * 〈一句话功能简述〉:

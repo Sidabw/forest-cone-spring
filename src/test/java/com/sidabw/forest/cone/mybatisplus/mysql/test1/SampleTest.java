@@ -8,10 +8,10 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.sidabw.forest.cone.mybatisplus;
+package com.sidabw.forest.cone.mybatisplus.mysql.test1;
 
-import com.sidabw.forest.cone.mybatisplus.entity.User;
-import com.sidabw.forest.cone.mybatisplus.mapper.UserMapper;
+import com.sidabw.forest.cone.mybatisplus.test1.mapper.User;
+import com.sidabw.forest.cone.mybatisplus.test1.mapper.UserMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

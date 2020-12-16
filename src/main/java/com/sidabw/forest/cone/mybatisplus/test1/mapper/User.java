@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.sidabw.forest.cone.mybatisplus.entity;
+package com.sidabw.forest.cone.mybatisplus.test1.mapper;
 
 /**
  * 〈一句话功能简述〉:

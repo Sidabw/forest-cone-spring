@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.sidabw.forest.cone.mybatisplus.mapper")
+@MapperScan("com.sidabw.forest.cone.mybatisplus.generator.mapper")
 public class ForestConeApplication {
 
     public static void main(String[] args) {
