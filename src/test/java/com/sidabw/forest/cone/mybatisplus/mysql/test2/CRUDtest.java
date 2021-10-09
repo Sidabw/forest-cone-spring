@@ -47,7 +47,7 @@ public class CRUDtest {
     @Test
     public void saveTest(){
         ModelChangeLog modelChangeLog = new ModelChangeLog();
-        modelChangeLog.setId("2");
+//        modelChangeLog.setId("3");
         modelChangeLog.setIsDelete(0);
         modelChangeLog.setCreatedUserId("18");
         modelChangeLog.setGmt8Created("2020-12-11 09:49:10:064");
@@ -226,8 +226,10 @@ public class CRUDtest {
         //默认使用雪花算法+UUID生成id。当然也可以自定义id生成器。这个看官网吧。
         ModelChangeLog modelChangeLog = new ModelChangeLog();
         modelChangeLog.setModelVersion("v-1.2.2");
-        modelChangeLog.setModelDescribe("kkkkk");
+        modelChangeLog.setModelDescribe("kkkdddasdfasdfkk");
 
         modelChangeLogService.save(modelChangeLog);
+        //自动生成id会存在当前对象里。
+        System.out.println(JacksonUtils.convertToJsonStr(modelChangeLog));
     }
 }

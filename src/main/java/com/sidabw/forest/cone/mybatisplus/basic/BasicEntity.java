@@ -26,7 +26,8 @@ import lombok.Data;
 @Data
 public class BasicEntity {
 
-    @TableId(value = "id")
+    //不标记@TableId执行插入操作时，id没有值，则会生成默认值（雪花算法）
+//    @TableId(value = "id")
     private String id;
 
     private String gmt8Created;
