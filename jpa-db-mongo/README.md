@@ -1,3 +1,3 @@
-# mybatis-plus-mysql
+# jpa-db-mongo
 * 代码应该是来自algo-store 或者 魔豆 或者 魔豆的localized分支
 * test目录下有简单的测试, 虽然没跑通... 一开始应该是通的...

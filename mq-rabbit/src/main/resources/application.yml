@@ -1,0 +1,23 @@
+### Redis数据库索引(默认为0)
+spring:
+  rabbitmq:
+    #    virtual-host: javatrip
+    port: 5672
+    host: 127.0.0.1
+    #    username: guest
+    #    password: guest
+    #不要提交两次。如果代码里是手动提交这里就是manual；默认是auto。
+    listener:
+      simple:
+        acknowledge-mode: manual
+server:
+  port: 8021
+
+  tomcat:
+    uri-encoding: ISO-8859-1
+  servlet:
+    encoding:
+      charset: ISO-8859-1
+      force-request: true
+      force: true
+      force-response: true

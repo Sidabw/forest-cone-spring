@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author shaogz
  */
 @SpringBootApplication
-@MapperScan("com.sidabw.forest.cone.mybatisplus.generator.mapper")
+@MapperScan("com.sidabw.mybatisplus.mysql.generator.mapper")
 public class Mybatisplus4MysqlApp {
 
     public static void main(String[] args) {
