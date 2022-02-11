@@ -7,7 +7,7 @@
 package com.sidabw.mq.rabbit.test2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sidabw.mq.rabbit.test2.controller.ProducerController;
+import com.sidabw.mq.rabbit.test.producer.ProducerController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

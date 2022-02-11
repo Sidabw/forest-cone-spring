@@ -16,16 +16,16 @@ import org.springframework.context.annotation.Configuration;
  * @create 2021/5/7
  * @since 1.0.0
  */
-@Configuration
-public class RabbitConfig {
-
-    public final static String queueNameA = "first-queue-2";
-    public final static String queueNameB = "second-queue";
-
-    public final static String exchangeName = "first-spring-direct-exchange-2";
-
-    // public static final String routingKey = "info";
-    public static final String routingKey = "";
+// @Configuration
+// public class RabbitConfig {
+//
+//     public final static String queueNameA = "first-queue-2";
+//     public final static String queueNameB = "second-queue";
+//
+//     public final static String exchangeName = "first-spring-direct-exchange-2";
+//
+//     // public static final String routingKey = "info";
+//     public static final String routingKey = "";
 
     //
     // @Bean
@@ -67,4 +67,4 @@ public class RabbitConfig {
     //     return BindingBuilder.bind(queueA()).to(exchange()).with(routingKey).noargs();
     // }
 
-}
+// }

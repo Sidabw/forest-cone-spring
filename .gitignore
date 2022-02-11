@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/web-http-client/.gitignore
+/web-http-client/HELP.md
+/web-http-client/mvnw
+/web-http-client/mvnw.cmd
+/web-http-client/.mvn/
