@@ -6,7 +6,9 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +48,11 @@ public class CaffeineDemo {
         });
         //get方法是阻塞的，以此保证并发时只有1个线程写入缓存
         System.out.println(d);
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date(1649318408000L);
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date));
     }
 
     @Test

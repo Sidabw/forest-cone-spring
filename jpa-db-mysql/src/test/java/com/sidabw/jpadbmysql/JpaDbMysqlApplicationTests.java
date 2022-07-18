@@ -8,6 +8,7 @@ class JpaDbMysqlApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println(1);
     }
 
 }

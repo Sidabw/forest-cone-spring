@@ -1,0 +1,37 @@
+2022-03-07 11:32:12.637 [INFO] [5686] [StartupInfoLogger:55] Starting SpringDataMongodbTest on shaoguangzedeMacBook-Pro.local with PID 5686 (started by feiyi in /Users/feiyi/Documents/git-project-sidabw/forest-cone-spring/jpa-db-mongo)
+2022-03-07 11:32:12.639 [INFO] [5686] [SpringApplication:651] No active profile set, falling back to default profiles: default
+2022-03-07 11:32:13.207 [INFO] [5686] [RepositoryConfigurationDelegate:249] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-03-07 11:32:13.208 [INFO] [5686] [RepositoryConfigurationDelegate:127] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2022-03-07 11:32:13.262 [INFO] [5686] [RepositoryConfigurationDelegate:187] Finished Spring Data repository scanning in 48ms. Found 1 MongoDB repository interfaces.
+2022-03-07 11:32:14.039 [INFO] [5686] [ExecutorConfigurationSupport:181] Initializing ExecutorService 'applicationTaskExecutor'
+2022-03-07 11:32:14.347 [INFO] [5686] [SLF4JLogger:71] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-03-07 11:32:14.487 [INFO] [5686] [SLF4JLogger:71] Opened connection [connectionId{localValue:1, serverValue:20}] to localhost:27017
+2022-03-07 11:32:14.492 [INFO] [5686] [SLF4JLogger:71] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=3622481}
+2022-03-07 11:32:14.863 [INFO] [5686] [StartupInfoLogger:61] Started SpringDataMongodbTest in 2.502 seconds (JVM running for 3.381)
+2022-03-07 11:32:15.136 [INFO] [5686] [SLF4JLogger:71] Closed connection [connectionId{localValue:2}] to localhost:27017 because there was a socket exception raised by this connection.
+2022-03-07 11:32:15.160 [INFO] [5686] [ExecutorConfigurationSupport:218] Shutting down ExecutorService 'applicationTaskExecutor'
+2022-03-07 11:32:54.020 [INFO] [5697] [StartupInfoLogger:55] Starting SpringDataMongodbTest on shaoguangzedeMacBook-Pro.local with PID 5697 (started by feiyi in /Users/feiyi/Documents/git-project-sidabw/forest-cone-spring/jpa-db-mongo)
+2022-03-07 11:32:54.022 [INFO] [5697] [SpringApplication:651] No active profile set, falling back to default profiles: default
+2022-03-07 11:32:54.489 [INFO] [5697] [RepositoryConfigurationDelegate:249] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-03-07 11:32:54.491 [INFO] [5697] [RepositoryConfigurationDelegate:127] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2022-03-07 11:32:54.553 [INFO] [5697] [RepositoryConfigurationDelegate:187] Finished Spring Data repository scanning in 56ms. Found 1 MongoDB repository interfaces.
+2022-03-07 11:32:55.190 [INFO] [5697] [ExecutorConfigurationSupport:181] Initializing ExecutorService 'applicationTaskExecutor'
+2022-03-07 11:32:55.457 [INFO] [5697] [SLF4JLogger:71] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-03-07 11:32:55.580 [INFO] [5697] [SLF4JLogger:71] Opened connection [connectionId{localValue:1, serverValue:22}] to localhost:27017
+2022-03-07 11:32:55.585 [INFO] [5697] [SLF4JLogger:71] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=2874720}
+2022-03-07 11:32:55.898 [INFO] [5697] [StartupInfoLogger:61] Started SpringDataMongodbTest in 2.149 seconds (JVM running for 2.998)
+2022-03-07 11:32:56.113 [INFO] [5697] [SLF4JLogger:71] Closed connection [connectionId{localValue:2}] to localhost:27017 because there was a socket exception raised by this connection.
+2022-03-07 11:32:56.137 [INFO] [5697] [ExecutorConfigurationSupport:218] Shutting down ExecutorService 'applicationTaskExecutor'
+2022-03-07 11:34:32.619 [INFO] [5713] [StartupInfoLogger:55] Starting SpringDataMongodbTest on shaoguangzedeMacBook-Pro.local with PID 5713 (started by feiyi in /Users/feiyi/Documents/git-project-sidabw/forest-cone-spring/jpa-db-mongo)
+2022-03-07 11:34:32.623 [INFO] [5713] [SpringApplication:651] No active profile set, falling back to default profiles: default
+2022-03-07 11:34:33.223 [INFO] [5713] [RepositoryConfigurationDelegate:249] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-03-07 11:34:33.224 [INFO] [5713] [RepositoryConfigurationDelegate:127] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2022-03-07 11:34:33.280 [INFO] [5713] [RepositoryConfigurationDelegate:187] Finished Spring Data repository scanning in 50ms. Found 1 MongoDB repository interfaces.
+2022-03-07 11:34:33.930 [INFO] [5713] [ExecutorConfigurationSupport:181] Initializing ExecutorService 'applicationTaskExecutor'
+2022-03-07 11:34:34.229 [INFO] [5713] [SLF4JLogger:71] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-03-07 11:34:34.355 [INFO] [5713] [SLF4JLogger:71] Opened connection [connectionId{localValue:1, serverValue:24}] to localhost:27017
+2022-03-07 11:34:34.360 [INFO] [5713] [SLF4JLogger:71] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=3407122}
+2022-03-07 11:34:34.701 [INFO] [5713] [StartupInfoLogger:61] Started SpringDataMongodbTest in 2.377 seconds (JVM running for 3.257)
+2022-03-07 11:34:34.944 [INFO] [5713] [SLF4JLogger:71] Opened connection [connectionId{localValue:2, serverValue:25}] to localhost:27017
+2022-03-07 11:34:35.055 [INFO] [5713] [SLF4JLogger:71] Closed connection [connectionId{localValue:2, serverValue:25}] to localhost:27017 because the pool has been closed.
+2022-03-07 11:34:35.060 [INFO] [5713] [ExecutorConfigurationSupport:218] Shutting down ExecutorService 'applicationTaskExecutor'
