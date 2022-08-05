@@ -1,0 +1,10 @@
+spring:
+  cache:
+    type: caffeine
+    cache-names:
+      - drawCache
+    caffeine:
+      # initialCapacity 初始的缓存个数大小
+      # maximumSize 最大缓存个数容量 会使用Window TinyLfu策略来删除缓存
+      # refreshAfterWrite 创建缓存后，如果经过一定时间没有更新或覆盖，则会在下一次获取该值的时候，会在后台异步去刷新缓存
+      spec: initialCapacity=20,maximumSize=4096,refreshAfterWrite=120s

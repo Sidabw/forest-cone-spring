@@ -1,0 +1,27 @@
+spring:
+  cache1:
+    database: 0
+    host: r-uf6cmix681d5c4wsnmpd.redis.rds.aliyuncs.com
+    port: 6379
+    password: cc%_live^&redis36@ol
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 2
+        min-idle: 0
+        max-wait: 5000
+        time-between-eviction-runs: 1800000
+  cache2:
+    database: 0
+    host: r-uf6cmix681d5c4wsnmpd.redis.rds.aliyuncs.com
+    port: 6379
+    password: cc%_live^&redis36@ol
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 2
+        min-idle: 0
+        max-wait: 5000
+        time-between-eviction-runs: 1800000
