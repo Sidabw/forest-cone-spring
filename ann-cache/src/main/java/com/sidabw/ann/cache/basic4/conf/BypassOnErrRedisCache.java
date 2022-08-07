@@ -28,26 +28,18 @@ public class BypassOnErrRedisCache extends RedisCache {
     @Override
     protected Object lookup(Object key) {
 
-
-        //TODO 这个wrapper好奇怪啊，有别的办法吗
-
         //测试结果是 慢调用生效了。
-        BypassOnErrRedisCacheWrapper wrapper = new BypassOnErrRedisCacheWrapper(this, key);
-        Supplier<Object> decoratedSupplier = CircuitBreaker.decorateSupplier(circuitBreaker, wrapper::doLookUp);
+        Supplier<Object> decoratedSupplier = CircuitBreaker.decorateSupplier(circuitBreaker, () -> {
+            try {
+                return super.lookup(key);
+            } catch (Exception e) {
+                log.error("get cache from redis fail, do real work then. msg {}", e.getMessage());
+            }
+            //返回null了，自然就会去调用'被代理对象'
+            return null;
+        });
         //从异常中恢复：'doSomething'抛异常了，此时返回 'Hello from Recovery'，而不是把异常抛出来
-        Object result = Try.ofSupplier(decoratedSupplier).recover(throwable -> null).get();
-
-        return result;
-    }
-
-    public Object realLookup(Object key) {
-        try {
-            return super.lookup(key);
-        } catch (Exception e) {
-            log.error("get cache from redis fail, do real work then. msg {}", e.getMessage());
-        }
-        //返回null了，自然就会去调用'被代理对象'
-        return null;
+        return Try.ofSupplier(decoratedSupplier).recover(throwable -> null).get();
     }
 
     @Override
