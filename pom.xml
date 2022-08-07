@@ -14,6 +14,7 @@
         <module>template-redis</module>
         <module>ann-scheduled</module>
         <module>mq-rabbit</module>
+        <module>ann-circuitbreaker</module>
     </modules>
 
     <groupId>com.sidabw</groupId>
