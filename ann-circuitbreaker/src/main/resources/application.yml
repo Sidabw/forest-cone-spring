@@ -1,0 +1,10 @@
+server:
+  port: 8088
+resilience4j.circuitbreaker:
+  instances:
+    backendA:
+      registerHealthIndicator: true
+      slidingWindowSize: 2
+      failure-rate-threshold: 50
+      wait-duration-in-open-state: 10s
+      permitted-number-of-calls-in-half-open-state: 2
