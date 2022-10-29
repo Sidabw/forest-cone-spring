@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * from： https://www.jianshu.com/p/9a80c662dac4
@@ -19,6 +20,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class CaffeineDemo {
 
+    /*
+    1。 Cache 和 LoadingCache的区别
+            都是接口，LoadingCache是Cache的子类，覆盖了Cache的功能如下：
+            get的时候，LoadingCache会根据构造传入的CacheLoader，在给入key没有对应value的时候，去执行CacheLoader拿到value再写入再返回
+                                              额外提供的功能如下：
+            refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
+            换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
+            expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
+            真说他俩有啥区别，一个是框架的scheduler给你把缓存删了，另外一个需要你get的时候触发，但不是阻塞你的get，会立刻返回你一个旧的。
+            没啥好坏，场景不同。
+            真心不知道这到底得是多复杂的缓存业务，才会用到这些东西
+
+     */
     @Test
     public void test1() throws InterruptedException {
         //填充策略：手动加载
@@ -42,7 +56,7 @@ public class CaffeineDemo {
 
         //高级一点的拿
         String d = caffeineCache.get("d", k -> {
-            // 满足大多数拿不到就...然后再放到缓存中的场景
+            // 满足大多数"拿不到就...然后再放到缓存中"的场景
             // String dV = getFromDb(k);
             return "d-v";
         });
@@ -80,20 +94,47 @@ public class CaffeineDemo {
     @Test
     public void test4() throws InterruptedException {
 
+        AtomicInteger atomicInteger = new AtomicInteger();
         //refreshAfterWrite的测试
         LoadingCache<String, Object> graphs = Caffeine.newBuilder()
             .maximumSize(10_000)
-            // 指定在创建缓存或者最近一次更新缓存后经过固定的时间间隔，刷新缓存
+            //指定在创建缓存或者最近一次更新缓存后经过固定的时间间隔，刷新缓存
             //这个刷新是惰性的，会在get的时候触发
             //怎么刷新的，自然就是注册的给Caffeine的函数
-            .refreshAfterWrite(2, TimeUnit.SECONDS)
+            .refreshAfterWrite(3, TimeUnit.SECONDS)
             .build(key -> {
-                System.out.println(1);
-                return "ddd";
+                System.out.println("构造开始");
+                String result = "dd " + atomicInteger.getAndIncrement();
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                }catch (Exception e){}
+                System.out.println("构造结束");
+                return result;
             });
-        System.out.println(graphs.get("a"));
-        TimeUnit.SECONDS.sleep(3);
-        System.out.println(graphs.get("a"));
+        //主线程先把值写进去
+        System.out.println("第一次取值：" + graphs.get("a"));
+        //到达触发刷新的节点
+        TimeUnit.SECONDS.sleep(7);
+        System.out.println("到达触发刷新的节点");
+
+        //两个线程同时去拿这个值
+        //现象就是，这俩有一个会触发build时传入的CacheLoader，
+        //但这俩都会立刻返回拿到旧的值,,,
+        //直到最后的 '线程3:' 才会拿到这哥俩其中的一个异步刷新后的值
+        //至于'线程3:'刷新后的值，没人拿嘛..旧不说了..【一共执行了三次CacheLoader】
+        new Thread(() -> {
+            System.out.println("线程1:" + graphs.get("a"));
+        }).start();
+
+
+        new Thread(() -> {
+            System.out.println("线程2:" + graphs.get("a"));
+        }).start();
+
+        TimeUnit.SECONDS.sleep(10);
+
+        System.out.println("线程3:" + graphs.get("a"));
+
         TimeUnit.SECONDS.sleep(10);
 
         //1.refreshAfterWrite将在查询数据的时候判断该数据是不是符合查询条件，如果符合条件该缓存就会去执行刷新操作。
