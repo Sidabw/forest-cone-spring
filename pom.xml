@@ -7,14 +7,18 @@
         <module>mybatis-plus-mysql</module>
         <module>jpa-db-mongo</module>
         <module>ann-async</module>
-        <module>http-feign</module>
+        <module>ann-circuitbreaker</module>
+        <module>web-http-feign</module>
         <module>ann-validation</module>
         <module>ann-event-listener</module>
         <module>ann-cache</module>
         <module>template-redis</module>
         <module>ann-scheduled</module>
         <module>mq-rabbit</module>
-        <module>ann-circuitbreaker</module>
+        <module>web-flux</module>
+        <module>web-http-client</module>
+        <module>aaa-demo</module>
+        <module>jpa-db-mysql</module>
     </modules>
 
     <groupId>com.sidabw</groupId>

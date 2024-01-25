@@ -1,80 +1,67 @@
 package com.sidabw.webhttpclient.resttemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sidabw.webhttpclient.resttemplate.pojo.SidaParams;
 import com.sidabw.webhttpclient.resttemplate.pojo.SidaResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 /**
+ *
+ * 超时时间的相关问题
  * @author shaogz
+ * @since 2024/1/25 09:29
  */
 @Slf4j
 public class Demo2 {
 
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(5);
+    @Test
+    public void testExternalConfig() {
+        //方式一
+        int timeout = 5000;
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        //1. 从连接池中获取链接的超时时间（the time to wait for a connection from the connection manager/pool）
+        clientHttpRequestFactory.setConnectionRequestTimeout(timeout);
+        //2. 与远程主机建立链接的超时时间（the time to establish the connection with the remote host）
+        clientHttpRequestFactory.setConnectTimeout(timeout);
+        //3. 建立链接后给到两个响应包的最长间隔时间（ – the time waiting for data – after establishing the connection; maximum time of inactivity between two data packets）
+        clientHttpRequestFactory.setReadTimeout(timeout);
+        new RestTemplate(clientHttpRequestFactory);
 
-    /**
-     * 先说结论：是可以通过ResponseExtractor完成对ResBody大小的限制工作的，对应当前项目的paramsTest5接口.
-     * 项目应该是在：回调任务执行系统：swordman
-     */
-    public static void main(String[] args) throws InterruptedException {
-        log.warn("aaa");
-        TimeUnit.SECONDS.sleep(5);
-        log.warn("wake up...");
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = "http://localhost:8889/paramsTest5?a=del";
 
-        //用这个来改变请求body 或 请求头
-        RequestCallback requestCallback = clientHttpRequest -> {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(clientHttpRequest.getBody(), new SidaParams("bar", "bar", "bar"));
-            log.warn("write req body in req callback");
-        };
+        //方式二
+        int timeout2 = 1000;
+        RequestConfig config = RequestConfig.custom()
+                .setConnectionRequestTimeout(timeout2)
+                .setSocketTimeout(timeout2)
+                .setConnectTimeout(timeout2)
+                .build();
+        CloseableHttpClient client = HttpClientBuilder
+                .create()
+                .setDefaultRequestConfig(config)
+                .build();
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory2 = new HttpComponentsClientHttpRequestFactory(client);
+        RestTemplate restTemplate2 = new RestTemplate(clientHttpRequestFactory2);
+        /*
 
-        //用这个从ClientHttpResponse中提取数据
-        ResponseExtractor<SidaResult> responseExtractor = clientHttpResponse -> {
-            HttpStatus statusCode = clientHttpResponse.getStatusCode();
-            log.warn("statusCode: " + statusCode);
+         ***ATTENTION***
+         1。真正的超时时间是上面设置的三个时间的和
+         2。这三个加起来就是最长请求结束的时间吗？不是的，超大文件的下载，响应包一直write，客户端这边要读好久，那...  就是好久..
+         3。默认都是配置了连接池的；这个连接池说的是TCP物理链接，即http的keep alive属性；可能里面的maxConnections or maxConnectionsPerRoute不满足
 
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+         ***ATTENTION***
 
-            int readThreshold = 1024*24;
-            int readAlready = 0;
+        */
+        HttpEntity<SidaParams> request = new HttpEntity<>(new SidaParams("bar", "bar", "bar"));
+        String fooResourceUrl = "https://a085-103-90-191-98.ngrok.io/paramsTest4";
+        SidaResult foo = restTemplate2.postForObject(fooResourceUrl, request, SidaResult.class);
+        System.out.println(foo);
 
-            InputStream body = clientHttpResponse.getBody();
-            byte[] tmp = new byte[1024];
-            int len = 0;
-            int i = 0;
-            while ((len = body.read(tmp)) != 0) {
-                readAlready += len;
-                log.warn("read once {}, {}, {}", len, i++, readAlready);
-                if (readAlready > readThreshold) {
-                    log.warn("full {}, {}, {}", len, i++, readAlready);
-                    clientHttpResponse.close();
-                    throw new RuntimeException("be full...");
-                    //return null;
-                }
-            }
-            return null;
-        };
-        SidaResult executeRes = restTemplate.execute(fooResourceUrl, HttpMethod.POST, requestCallback, responseExtractor);
-        log.warn("executeRes: " + executeRes);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ex.demo.config.http;
+package com.sidabw.webhttpclient.resttemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,6 @@ import org.apache.http.HeaderElement;
 import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
@@ -17,7 +16,6 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -26,15 +24,11 @@ import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpCoreContext;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -47,17 +41,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
+ * 对maxTotalConnection 和 maxConnectionPerRoute的探究。
+ * 猜的结论：当无可用的链接时，会创建新的tcp链接。
  * @author shaogz
  * @since 2024/1/25 08:26
  */
-@Configuration
-@Component
-@ConditionalOnClass(value = {RestTemplate.class, CloseableHttpClient.class})
-@Data
 @Slf4j
-public class DemoHttpClientConfig {
-    @Autowired
-    private HttpClientPoolConfig httpClientPoolConfig;
+public class Demo4 {
+
+    private HttpClientPoolConfig httpClientPoolConfig = new HttpClientPoolConfig();
 
     @Bean
     public RestTemplate restTemplate() {
@@ -94,14 +86,17 @@ public class DemoHttpClientConfig {
      */
     @Bean(name = "httpClientTemplate")
     public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return createRestTemplate(factory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+        //重新设置StringHttpMessageConverter字符集，解决中文乱码问题
+        modifyDefaultCharset(restTemplate);
+        //设置错误处理器
+        restTemplate.setErrorHandler(new DefaultResponseErrorHandler());
+        return restTemplate;
     }
 
 
     /**
      * 配置httpClient
-     *
-     * @return
      */
     @Bean
     public HttpClient httpClient() {
@@ -144,7 +139,6 @@ public class DemoHttpClientConfig {
 
     /**
      * 配置长连接保持策略
-     * @return
      */
     public ConnectionKeepAliveStrategy connectionKeepAliveStrategy(){
         return (response, context) -> {
@@ -197,23 +191,9 @@ public class DemoHttpClientConfig {
     }
 
 
-    private RestTemplate createRestTemplate(ClientHttpRequestFactory factory) {
-        RestTemplate restTemplate = new RestTemplate(factory);
-
-        //我们采用RestTemplate内部的MessageConverter
-        //重新设置StringHttpMessageConverter字符集，解决中文乱码问题
-        modifyDefaultCharset(restTemplate);
-
-        //设置错误处理器
-        restTemplate.setErrorHandler(new DefaultResponseErrorHandler());
-
-        return restTemplate;
-    }
 
     /**
      * 修改默认的字符集类型为utf-8
-     *
-     * @param restTemplate
      */
     private void modifyDefaultCharset(RestTemplate restTemplate) {
         List<HttpMessageConverter<?>> converterList = restTemplate.getMessageConverters();
@@ -229,6 +209,47 @@ public class DemoHttpClientConfig {
         }
         Charset defaultCharset = Charset.forName(httpClientPoolConfig.getCharset());
         converterList.add(1, new StringHttpMessageConverter(defaultCharset));
+    }
+
+    @Data
+    private static class HttpClientPoolConfig {
+        /**
+         * java配置的优先级低于yml配置；如果yml配置不存在，会采用java配置
+         */
+        /**
+         * 连接池的最大连接数
+         */
+        private int maxTotalConnect ;
+        /**
+         * 同路由的并发数
+         */
+        private int maxConnectPerRoute ;
+        /**
+         * 客户端和服务器建立连接超时，默认2s
+         */
+        private int connectTimeout = 2 * 1000;
+        /**
+         * 指客户端从服务器读取数据包的间隔超时时间,不是总读取时间，默认30s
+         */
+        private int readTimeout = 30 * 1000;
+
+        private String charset = "UTF-8";
+        /**
+         * 重试次数,默认2次
+         */
+        private int retryTimes = 2;
+        /**
+         * 从连接池获取连接的超时时间,不宜过长,单位ms
+         */
+        private int connectionRequestTimout = 200;
+        /**
+         * 针对不同的地址,特别设置不同的长连接保持时间
+         */
+        private Map<String,Integer> keepAliveTargetHost;
+        /**
+         * 针对不同的地址,特别设置不同的长连接保持时间,单位 s
+         */
+        private int keepAliveTime = 60;
     }
 
 }

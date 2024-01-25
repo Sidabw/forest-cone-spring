@@ -1,6 +1,5 @@
 package com.ex.demo.con;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,6 +33,7 @@ public class RecordCallbackControllerTest {
                 Object forObject = restTemplate.getForObject("http://localhost:8889/recordCallback4", Object.class);
                 LOGGER.info("got res:{}", forObject);
             }).start();
+            TimeUnit.SECONDS.sleep(1);
         }
         TimeUnit.SECONDS.sleep(100);
 
