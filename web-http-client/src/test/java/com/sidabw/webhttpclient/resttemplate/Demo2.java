@@ -26,9 +26,8 @@ public class Demo2 {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(5);
 
     /**
-     * 先说结论：是可以通过ResponseExtractor完成对ResBody大小的限制工作的，对应当前项目的paramsTest5接口
-     * @param args
-     * @throws InterruptedException
+     * 先说结论：是可以通过ResponseExtractor完成对ResBody大小的限制工作的，对应当前项目的paramsTest5接口.
+     * 项目应该是在：回调任务执行系统：swordman
      */
     public static void main(String[] args) throws InterruptedException {
         log.warn("aaa");
