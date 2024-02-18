@@ -22,16 +22,15 @@ public class CaffeineDemo {
 
     /*
     1。 Cache 和 LoadingCache的区别
-            都是接口，LoadingCache是Cache的子类，覆盖了Cache的功能如下：
-            get的时候，LoadingCache会根据构造传入的CacheLoader，在给入key没有对应value的时候，去执行CacheLoader拿到value再写入再返回
-                                              额外提供的功能如下：
-            refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
-            换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
-            expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
-            真说他俩有啥区别，一个是框架的scheduler给你把缓存删了，另外一个需要你get的时候触发，但不是阻塞你的get，会立刻返回你一个旧的。
-            没啥好坏，场景不同。
-            真心不知道这到底得是多复杂的缓存业务，才会用到这些东西
-
+        都是接口，LoadingCache是Cache的子类，覆盖了Cache的功能如下：
+        get的时候，LoadingCache会根据构造传入的CacheLoader，在给入key没有对应value的时候，去执行CacheLoader拿到value再写入再返回
+                                          额外提供的功能如下：
+        refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
+        换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
+        expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
+        真说他俩有啥区别，一个是框架的scheduler给你把缓存删了，另外一个需要你get的时候触发，但不是阻塞你的get，会立刻返回你一个旧的。
+        没啥好坏，场景不同。
+        真心不知道这到底得是多复杂的缓存业务，才会用到这些东西
      */
     @Test
     public void test1() throws InterruptedException {
@@ -99,7 +98,7 @@ public class CaffeineDemo {
         LoadingCache<String, Object> graphs = Caffeine.newBuilder()
             .maximumSize(10_000)
             //指定在创建缓存或者最近一次更新缓存后经过固定的时间间隔，刷新缓存
-            //这个刷新是惰性的，会在get的时候触发
+            //这个刷新是惰性的，会在get的时候触发，而且触发时会先返回旧值
             //怎么刷新的，自然就是注册的给Caffeine的函数
             .refreshAfterWrite(3, TimeUnit.SECONDS)
             .build(key -> {

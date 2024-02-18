@@ -1,0 +1,9 @@
+server:
+  port: 8084
+spring:
+  cache:
+    caffeine:
+      account:
+        spec: initialCapacity=500,maximumSize=2000,expireAfterWrite=5s
+# expireAfterWrite=5s,
+# ,refreshAfterWrite=5s

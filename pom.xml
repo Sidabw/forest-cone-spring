@@ -19,6 +19,7 @@
         <module>web-http-client</module>
         <module>aaa-demo</module>
         <module>jpa-db-mysql</module>
+        <module>ann-cache2</module>
     </modules>
 
     <groupId>com.sidabw</groupId>
