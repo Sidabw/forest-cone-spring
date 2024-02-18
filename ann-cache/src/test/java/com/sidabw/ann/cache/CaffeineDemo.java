@@ -24,7 +24,8 @@ public class CaffeineDemo {
     1。 Cache 和 LoadingCache的区别
         都是接口，LoadingCache是Cache的子类，覆盖了Cache的功能如下：
         get的时候，LoadingCache会根据构造传入的CacheLoader，在给入key没有对应value的时候，去执行CacheLoader拿到value再写入再返回
-                                          额外提供的功能如下：
+
+        额外提供的功能如下：
         refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
         换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
         expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
@@ -34,44 +35,38 @@ public class CaffeineDemo {
      */
     @Test
     public void test1() throws InterruptedException {
-        //填充策略：手动加载
-        Cache<String, String> caffeineCache =
-            Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).maximumSize(2).build();
+        //填充策略：手动加载，即缓存的写入需要手动调用put完成。
+        Cache<String, String> caffeineCache = Caffeine.newBuilder().maximumSize(2).build();
+        //放
+        caffeineCache.put("a", "a-v");
         //拿
         String value = caffeineCache.getIfPresent("a");
         System.out.println(value);
-        //放
-        caffeineCache.put("a", "a-v");
-        System.out.println(caffeineCache.getIfPresent("a"));
-        caffeineCache.put("b", "b-v");
-        caffeineCache.put("c", "c-v");
-        //暂时不细究，但是不睡这两秒，maximumSize就不生效
-        //猜测与Caffeine的 window TinyLfu回收策略有关。: LFU(Least frequently used) 最不经常使用
-        Thread.sleep(2000L);
-        System.out.println(caffeineCache.getAllPresent(Arrays.asList("a", "b", "c")));
-        //删
-        caffeineCache.invalidate("a");
-        System.out.println(caffeineCache.getIfPresent("a"));
-
-        //高级一点的拿
+        //拿不到时执行写入。多线程下，只有一个线程能够成功写入，另外一个线程会阻塞。
         String d = caffeineCache.get("d", k -> {
             // 满足大多数"拿不到就...然后再放到缓存中"的场景
             // String dV = getFromDb(k);
             return "d-v";
         });
-        //高级get方法是阻塞的，以此保证并发时只有1个线程写入缓存
         System.out.println(d);
+
+        //主动驱逐
+        caffeineCache.invalidate("a");
+        System.out.println(caffeineCache.getIfPresent("a"));
+
+        //触发基于大小的驱逐策略
+        caffeineCache.put("b", "b-v");
+        caffeineCache.put("c", "c-v");
+        //需要睡2s，猜测跟W-TinyLFU有关
+        Thread.sleep(2000L);
+        System.out.println(caffeineCache.getAllPresent(Arrays.asList("a", "b", "c")));
     }
 
     @Test
     public void test2() {
-        //填充策略：同步加载
-        LoadingCache<Object, String> loadingCache =
-            Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).maximumSize(2).build(key -> {
-                // String dV = getFromDb(k);
-                return "d-v";
-            });
-        //此时拿不到的化，就会执行注册的函数
+        //填充策略：自动加载
+        LoadingCache<Object, String> loadingCache = Caffeine.newBuilder().maximumSize(2).build(key -> {return "d-v";});
+        //此时拿不到的化，就会执行注册的函数；同样的，多线程下，只有一个线程能够成功写入，另外一个线程会阻塞
         String aV = loadingCache.get("a");
         //d-v
         System.out.println(aV);
@@ -79,6 +74,7 @@ public class CaffeineDemo {
 
     @Test
     public void test3() throws ExecutionException, InterruptedException {
+        //忽略
         //填充策略：异步加载
         //默认使用的线程池：ForkJoinPool.commonPool()，可以调用Caffeine.executor(Executor) 来替换
         AsyncLoadingCache<Object, String> asyncLoadingCache =
@@ -89,6 +85,8 @@ public class CaffeineDemo {
         CompletableFuture<String> completableFuture = asyncLoadingCache.get("a");
         System.out.println(completableFuture.get());
     }
+
+
 
     @Test
     public void test4() throws InterruptedException {
@@ -111,7 +109,8 @@ public class CaffeineDemo {
                 return result;
             });
         //主线程先把值写进去
-        System.out.println("第一次取值：" + graphs.get("a"));
+        System.out.println("第一次取值：");
+        System.out.println(graphs.get("a"));
         //到达触发刷新的节点
         TimeUnit.SECONDS.sleep(7);
         System.out.println("到达触发刷新的节点");

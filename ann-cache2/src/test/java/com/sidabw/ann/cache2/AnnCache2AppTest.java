@@ -21,8 +21,10 @@ public class AnnCache2AppTest {
     void test() throws InterruptedException {
         System.out.println(1);
         System.out.println(cache2Service.getObj("1"));
+        System.out.println(cache2Service.getObj("1"));
         TimeUnit.SECONDS.sleep(10);
         System.out.println(cache2Service.getObj("1"));
+        TimeUnit.SECONDS.sleep(5);
         System.out.println(cache2Service.getObj("1"));
 
     }

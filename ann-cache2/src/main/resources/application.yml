@@ -4,6 +4,6 @@ spring:
   cache:
     caffeine:
       account:
-        spec: initialCapacity=500,maximumSize=2000,expireAfterWrite=5s
+        spec: initialCapacity=500,maximumSize=2000,refreshAfterWrite=5s
 # expireAfterWrite=5s,
 # ,refreshAfterWrite=5s
