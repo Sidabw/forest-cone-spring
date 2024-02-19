@@ -26,12 +26,7 @@ public class CaffeineDemo {
         get的时候，LoadingCache会根据构造传入的CacheLoader，在给入key没有对应value的时候，去执行CacheLoader拿到value再写入再返回
 
         额外提供的功能如下：
-        refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
-        换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
-        expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
-        真说他俩有啥区别，一个是框架的scheduler给你把缓存删了，另外一个需要你get的时候触发，但不是阻塞你的get，会立刻返回你一个旧的。
-        没啥好坏，场景不同。
-        真心不知道这到底得是多复杂的缓存业务，才会用到这些东西
+
      */
     @Test
     public void test1() throws InterruptedException {
@@ -90,6 +85,13 @@ public class CaffeineDemo {
 
     @Test
     public void test4() throws InterruptedException {
+
+//        refresh，异步的更新缓存。如果更新的时候有其他线程拿值，不会阻塞，会拿到旧的。
+//        换句话说，refreshAfterWrite什么意思？就是到点了其他线程来拿的时候，会立刻返回旧的，同时异步的去刷新。非常神奇...
+//        expireAfterWrite自然就是你更新了一个缓存，这个缓存过多久失效。
+//        真说他俩有啥区别，一个是框架的scheduler给你把缓存删了，另外一个需要你get的时候触发，但不是阻塞你的get，会立刻返回你一个旧的。
+//        没啥好坏，场景不同。
+//        真心不知道这到底得是多复杂的缓存业务，才会用到这些东西
 
         AtomicInteger atomicInteger = new AtomicInteger();
         //refreshAfterWrite的测试

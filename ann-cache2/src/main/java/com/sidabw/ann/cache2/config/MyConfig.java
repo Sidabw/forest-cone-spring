@@ -56,16 +56,5 @@ public class MyConfig {
         caffeineCacheManager.setCaffeine(caffeineConfigAccount);
         return caffeineCacheManager;
     }
-//    @Bean
-//    public LoadingCache<Object, Object> loadingCache(CacheLoader<Object, Object> cacheLoader, Caffeine<Object, Object> caffeineConfigAccount){
-//        //refreshAfterWrite
-//        //指定在创建缓存或者最近一次更新缓存后经过固定的时间间隔，刷新缓存
-//        //这个刷新是惰性的，会在get的时候触发，而且触发时会先返回旧值
-//        //怎么刷新的，自然就是注册的给Caffeine的函数
-
-//        return caffeineConfigAccount.build(cacheLoader);
-
-//    }
-
 
 }
