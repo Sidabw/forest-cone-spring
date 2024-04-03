@@ -21,6 +21,7 @@
         <module>jpa-db-mysql</module>
         <module>ann-cache2</module>
         <module>test-mockito</module>
+        <module>ann-retry</module>
     </modules>
 
     <groupId>com.sidabw</groupId>

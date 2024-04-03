@@ -17,8 +17,7 @@ public class MyAsyncUncaughtExceptionHandler implements RejectedExecutionHandler
         //原有的DiscardOldestPolicy，会抛弃队头的任务
         //新增该类的原因只是为了额外输出一行日志，没错.
         if (!e.isShutdown()) {
-            log.warn("oldest task discarded!");
-            e.getQueue().poll();
+            log.warn("oldest task discarded! {}", e.getQueue().poll());
             e.execute(r);
         }
     }

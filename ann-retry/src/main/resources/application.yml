@@ -1,0 +1,4 @@
+server:
+  port: 8084
+# expireAfterWrite=5s,
+# ,refreshAfterWrite=5s

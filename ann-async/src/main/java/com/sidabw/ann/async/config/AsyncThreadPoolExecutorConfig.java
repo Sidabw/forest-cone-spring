@@ -23,7 +23,8 @@ public class AsyncThreadPoolExecutorConfig {
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(2);
-        executor.setThreadNamePrefix("-MyAsyncConfigurerThread-1");
+        executor.setKeepAliveSeconds(60);
+        executor.setThreadNamePrefix("cc-async1-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
         executor.setRejectedExecutionHandler(new MyAsyncUncaughtExceptionHandler());
@@ -39,7 +40,7 @@ public class AsyncThreadPoolExecutorConfig {
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(2);
-        executor.setThreadNamePrefix("-MyAsyncConfigurerThread-2-");
+        executor.setThreadNamePrefix("cc-async2-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
         executor.setRejectedExecutionHandler(new MyAsyncUncaughtExceptionHandler());
