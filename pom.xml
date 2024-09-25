@@ -22,6 +22,7 @@
         <module>ann-cache2</module>
         <module>test-mockito</module>
         <module>ann-retry</module>
+        <module>web-smart-doc</module>
     </modules>
 
     <groupId>com.sidabw</groupId>

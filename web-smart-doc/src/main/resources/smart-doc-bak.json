@@ -1,0 +1,93 @@
+{
+  "serverUrl": "http://127.0.0.1",
+  "pathPrefix": "",
+  "isStrict": false,
+  "allInOne": true,
+  "outPath": "/Users/feiyi/unsync-git-projects/workspace-github-sidabw/forest-cone-spring/web-smart-doc",
+  "coverOld": true,
+  "createDebugPage": true,
+  "packageFilters": "",
+  "md5EncryptedHtmlName": false,
+  "style":"xt256",
+  "projectName": "pdai-springboot-demo-smart-doc",
+  "skipTransientField": true,
+  "sortByTitle":false,
+  "showAuthor":true,
+  "requestFieldToUnderline":true,
+  "responseFieldToUnderline":true,
+  "inlineEnum":true,
+  "recursionLimit":7,
+  "allInOneDocFileName":"index.html",
+  "requestExample":"true",
+  "responseExample":"true",
+
+  "ignoreRequestParams":[
+    "org.springframework.ui.ModelMap"
+  ],
+  "dataDictionaries": [{
+    "title": "http状态码字典",
+    "enumClassName": "tech.pdai.springboot.smartdoc.constant.ResponseStatus",
+    "codeField": "responseCode",
+    "descField": "description"
+  }],
+  "errorCodeDictionaries": [{
+    "title": "title",
+    "enumClassName": "tech.pdai.springboot.smartdoc.constant.ResponseStatus",
+    "codeField": "responseCode",
+    "descField": "description"
+  }],
+  "revisionLogs": [{
+    "version": "1.1",
+    "revisionTime": "2022-07-01 22:12:01",
+    "status": "update",
+    "author": "pdai",
+    "remarks": "init user api"
+  },{
+    "version": "1.2",
+    "revisionTime": "2022-07-01 22:12:02",
+    "status": "update",
+    "author": "pdai",
+    "remarks": "add address api"
+  }
+  ],
+  "customResponseFields": [{
+    "name": "code",
+    "desc": "响应代码",
+    "ownerClassName": "org.springframework.data.domain.Pageable",
+    "ignore":true,
+    "value": "00000"
+  }],
+  "requestHeaders": [{
+    "name": "token",
+    "type": "string",
+    "desc": "desc",
+    "value":"token请求头的值",
+    "required": false,
+    "since": "-",
+    "pathPatterns": "/app/test/**",
+    "excludePathPatterns":"/app/page/**"
+  },{
+    "name": "appkey",
+    "type": "string",
+    "desc": "desc",
+    "value":"appkey请求头的值",
+    "required": false,
+    "pathPatterns": "/test/add,/testConstants/1.0",
+    "since": "-"
+  }],
+  "requestParams": [
+    {
+      "name": "configPathParam",
+      "type": "string",
+      "desc": "desc",
+      "paramIn": "path",
+      "value":"testPath",
+      "required": false,
+      "since": "2.2.3",
+      "pathPatterns": "/app/test/**",
+      "excludePathPatterns":"/app/page/**"
+    }],
+  "responseBodyAdvice":{
+    "className":"tech.pdai.springboot.smartdoc.entity.ResponseResult"
+  }
+}
